@@ -45,16 +45,16 @@ const ProductDetailPage = () => {
     const basePrice = parseFloat(product.price) || 0;
     if (product.category === 'Giant') {
       return [
-        { label: '3ft', price: basePrice * 0.6, inStock: product.stock > 0 },
-        { label: '4ft', price: basePrice * 0.8, inStock: product.stock > 0 },
-        { label: '5ft', price: basePrice * 0.9, inStock: product.stock > 0 },
-        { label: '6ft', price: basePrice, inStock: product.stock > 0 },
+        { label: '3m', price: basePrice * 0.6, inStock: product.stock > 0 },
+        { label: '4m', price: basePrice * 0.8, inStock: product.stock > 0 },
+        { label: '5m', price: basePrice * 0.9, inStock: product.stock > 0 },
+        { label: '6m', price: basePrice, inStock: product.stock > 0 },
       ];
     } else if (product.category === 'Standard') {
       return [
-        { label: '2ft', price: basePrice * 0.5, inStock: product.stock > 0 },
-        { label: '3ft', price: basePrice * 0.75, inStock: product.stock > 0 },
-        { label: '4ft', price: basePrice, inStock: product.stock > 0 },
+        { label: '2m', price: basePrice * 0.5, inStock: product.stock > 0 },
+        { label: '3m', price: basePrice * 0.75, inStock: product.stock > 0 },
+        { label: '4m', price: basePrice, inStock: product.stock > 0 },
       ];
     } else {
       return [{ label: 'Standard', price: basePrice, inStock: product.stock > 0 }];
