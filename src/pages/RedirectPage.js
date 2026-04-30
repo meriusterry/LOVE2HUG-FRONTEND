@@ -165,7 +165,7 @@ const RedirectPage = () => {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 8.4 }}
             className="text-center text-xs text-gray-400 mt-6"
           >
             You will be redirected to PayFast's secure payment page. Your transaction is protected by industry-standard encryption.

@@ -3,13 +3,9 @@ import { motion } from 'framer-motion';
 import { 
   ShoppingBag, 
   AttachMoney, 
-  People, 
-  TrendingUp,
-  Visibility,
-  MoreVert,
   Inventory,
   Category,
-  Assessment
+  Visibility
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
@@ -50,7 +46,6 @@ const RecentOrdersTable = () => {
     try {
       const response = await api.get('/orders');
       if (response.data.success) {
-        // Get only the 5 most recent orders
         setOrders(response.data.orders.slice(0, 5));
       }
     } catch (error) {
@@ -85,7 +80,10 @@ const RecentOrdersTable = () => {
   if (loading) {
     return (
       <div className="p-6 text-center">
-        <p className="text-gray-500">Loading recent orders...</p>
+        <div className="animate-pulse">
+          <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto mb-2"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+        </div>
       </div>
     );
   }
@@ -150,7 +148,6 @@ const RecentOrdersTable = () => {
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [orders, setOrders] = useState([]);
   const [stats, setStats] = useState({
     totalRevenue: 0,
     totalOrders: 0,
@@ -171,37 +168,26 @@ const AdminDashboard = () => {
   const fetchDashboardData = async () => {
     setLoading(true);
     try {
-      // Fetch products
-      const productsResponse = await api.get('/products');
-      const productsData = productsResponse.data.products || [];
+      const [productsRes, ordersRes] = await Promise.all([
+        api.get('/products'),
+        api.get('/orders')
+      ]);
+      
+      const productsData = productsRes.data.products || [];
+      const ordersData = ordersRes.data.orders || [];
+      
       setProducts(productsData);
-
-      // Fetch orders
-      const ordersResponse = await api.get('/orders');
-      const ordersData = ordersResponse.data.orders || [];
-      setOrders(ordersData);
-
-      // Calculate stats
-      const totalRevenue = ordersData.reduce((sum, order) => sum + (parseFloat(order.total) || 0), 0);
-      const totalOrders = ordersData.length;
-      const totalProducts = productsData.length;
-      const lowStockItems = productsData.filter(p => p.stock < 10 && p.status === 'active').length;
-      const pendingOrders = ordersData.filter(o => o.status === 'pending').length;
-      const orderReceived = ordersData.filter(o => o.status === 'order_received').length;
-      const processingOrders = ordersData.filter(o => o.status === 'processing').length;
-      const shippedOrders = ordersData.filter(o => o.status === 'shipped').length;
-      const deliveredOrders = ordersData.filter(o => o.status === 'delivered').length;
-
+      
       setStats({
-        totalRevenue,
-        totalOrders,
-        totalProducts,
-        lowStockItems,
-        pendingOrders,
-        orderReceived,
-        processingOrders,
-        shippedOrders,
-        deliveredOrders
+        totalRevenue: ordersData.reduce((sum, o) => sum + (parseFloat(o.total) || 0), 0),
+        totalOrders: ordersData.length,
+        totalProducts: productsData.length,
+        lowStockItems: productsData.filter(p => p.stock < 10 && p.status === 'active').length,
+        pendingOrders: ordersData.filter(o => o.status === 'pending').length,
+        orderReceived: ordersData.filter(o => o.status === 'order_received').length,
+        processingOrders: ordersData.filter(o => o.status === 'processing').length,
+        shippedOrders: ordersData.filter(o => o.status === 'shipped').length,
+        deliveredOrders: ordersData.filter(o => o.status === 'delivered').length
       });
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -211,28 +197,20 @@ const AdminDashboard = () => {
     }
   };
 
-  // Helper function to get product image URL
   const getProductImageUrl = (product) => {
-    if (product.imageUrl) {
-      return product.imageUrl;
-    }
-    if (product.image_url) {
-      return product.image_url;
-    }
-    if (product.product_image) {
-      return `data:${product.image_type || 'image/jpeg'};base64,${product.product_image}`;
-    }
+    if (product.imageUrl) return product.imageUrl;
+    if (product.image_url) return product.image_url;
+    if (product.product_image) return `data:${product.image_type || 'image/jpeg'};base64,${product.product_image}`;
     return 'https://via.placeholder.com/50x50?text=No+Image';
   };
 
   const statCards = [
-    { title: 'Total Revenue', value: `R${stats.totalRevenue.toFixed(2)}`, icon: <AttachMoney className="w-6 h-6 text-white" />, color: 'bg-gradient-to-r from-primary-500 to-primary-600', trend: null },
-    { title: 'Total Orders', value: stats.totalOrders.toString(), icon: <ShoppingBag className="w-6 h-6 text-white" />, color: 'bg-gradient-to-r from-secondary-500 to-secondary-600', trend: null },
-    { title: 'Total Products', value: stats.totalProducts.toString(), icon: <Inventory className="w-6 h-6 text-white" />, color: 'bg-gradient-to-r from-blue-500 to-blue-600', trend: null },
-    { title: 'Low Stock Items', value: stats.lowStockItems.toString(), icon: <Category className="w-6 h-6 text-white" />, color: 'bg-gradient-to-r from-orange-500 to-orange-600', trend: null },
+    { title: 'Total Revenue', value: `R${stats.totalRevenue.toFixed(2)}`, icon: <AttachMoney className="w-6 h-6 text-white" />, color: 'bg-gradient-to-r from-primary-500 to-primary-600' },
+    { title: 'Total Orders', value: stats.totalOrders.toString(), icon: <ShoppingBag className="w-6 h-6 text-white" />, color: 'bg-gradient-to-r from-secondary-500 to-secondary-600' },
+    { title: 'Total Products', value: stats.totalProducts.toString(), icon: <Inventory className="w-6 h-6 text-white" />, color: 'bg-gradient-to-r from-blue-500 to-blue-600' },
+    { title: 'Low Stock Items', value: stats.lowStockItems.toString(), icon: <Category className="w-6 h-6 text-white" />, color: 'bg-gradient-to-r from-orange-500 to-orange-600' },
   ];
 
-  // Get top selling products (sort by sales/reviews or just use first few)
   const topProducts = [...products]
     .sort((a, b) => (b.reviews_count || 0) - (a.reviews_count || 0))
     .slice(0, 5);
@@ -241,7 +219,7 @@ const AdminDashboard = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="text-6xl mb-4 animate-bounce">🧸</div>
+          <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">Loading dashboard...</p>
         </div>
       </div>
@@ -256,14 +234,12 @@ const AdminDashboard = () => {
           <p className="text-gray-600">Welcome back! Here's what's happening with your store today.</p>
         </div>
 
-        {/* Stats Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {statCards.map((stat, index) => (
             <StatCard key={index} {...stat} />
           ))}
         </div>
 
-        {/* Additional Stats Row */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           <div className="bg-white rounded-xl shadow-lg p-4 text-center">
             <p className="text-gray-500 text-sm">Pending</p>
@@ -288,7 +264,6 @@ const AdminDashboard = () => {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 mb-8">
-          {/* Quick Actions */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h3 className="text-xl font-bold text-gray-800 mb-4">Quick Actions</h3>
             <div className="space-y-3">
@@ -305,10 +280,18 @@ const AdminDashboard = () => {
                 📦 Manage Orders
               </button>
               <button 
+                onClick={() => navigate('/admin/messages')}
+                className="w-full text-left px-4 py-3 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
+              >
+                📧 View Contact Messages
+              </button>
+              <button 
                 onClick={async () => {
                   try {
-                    const productsRes = await api.get('/products');
-                    const ordersRes = await api.get('/orders');
+                    const [productsRes, ordersRes] = await Promise.all([
+                      api.get('/products'),
+                      api.get('/orders')
+                    ]);
                     const report = {
                       date: new Date().toISOString(),
                       totalProducts: productsRes.data.products.length,
@@ -326,17 +309,9 @@ const AdminDashboard = () => {
               >
                 📊 Generate Report
               </button>
-
-              <button 
-  onClick={() => navigate('/admin/messages')}
-  className="w-full text-left px-4 py-3 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
->
-  📧 View Contact Messages
-</button>
             </div>
           </div>
 
-          {/* Top Products with Images */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h3 className="text-xl font-bold text-gray-800 mb-4">Top Products</h3>
             <div className="space-y-4">
@@ -370,7 +345,6 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Recent Orders */}
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           <div className="p-6 border-b border-gray-200">
             <div className="flex justify-between items-center">

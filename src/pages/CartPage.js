@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Delete, Add, Remove, ShoppingBag, LocalOffer } from '@mui/icons-material';
+import { Delete, Add, Remove, ShoppingBag } from '@mui/icons-material';
 import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
 
@@ -34,20 +34,17 @@ const CartPage = () => {
   };
 
   const getImageUrl = (item) => {
-    if (item.imageUrl) {
-      return item.imageUrl;
-    }
-    if (item.image) {
-      return item.image;
-    }
+    if (item.imageUrl) return item.imageUrl;
+    if (item.image_url) return item.image_url;
+    if (item.image) return item.image;
     return 'https://via.placeholder.com/200x200?text=No+Image';
   };
 
   const subtotal = cartTotal;
   const discountAmount = discount;
   const subtotalAfterDiscount = subtotal - discountAmount;
-  const shipping = 100; // Fixed delivery fee of R100
-  const total = subtotalAfterDiscount + shipping; // No tax
+  const shipping = 100;
+  const total = subtotalAfterDiscount + shipping;
 
   if (cartItems.length === 0) {
     return (

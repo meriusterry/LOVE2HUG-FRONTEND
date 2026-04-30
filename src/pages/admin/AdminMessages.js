@@ -9,7 +9,7 @@ const AdminMessages = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all'); // all, unread, read
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     fetchMessages();
@@ -33,8 +33,8 @@ const AdminMessages = () => {
   const markAsRead = async (id) => {
     try {
       await api.put(`/contact/${id}/read`);
-      fetchMessages();
       toast.success('Message marked as read');
+      fetchMessages();
     } catch (error) {
       toast.error('Failed to mark as read');
     }
@@ -44,8 +44,8 @@ const AdminMessages = () => {
     if (window.confirm('Are you sure you want to delete this message?')) {
       try {
         await api.delete(`/contact/${id}`);
-        fetchMessages();
         toast.success('Message deleted');
+        fetchMessages();
       } catch (error) {
         toast.error('Failed to delete message');
       }
@@ -78,13 +78,9 @@ const AdminMessages = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4">
-        {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <button 
-              onClick={() => navigate('/admin')}
-              className="text-primary-500 hover:text-primary-600 mb-2 inline-flex items-center gap-1"
-            >
+            <button onClick={() => navigate('/admin')} className="text-primary-500 hover:text-primary-600 mb-2 inline-flex items-center gap-1">
               <ArrowBack className="w-4 h-4" /> Back to Dashboard
             </button>
             <h1 className="text-4xl font-bold text-gray-800">Contact Messages</h1>
@@ -92,7 +88,6 @@ const AdminMessages = () => {
           </div>
         </div>
 
-        {/* Stats Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <div className="bg-white rounded-2xl shadow-lg p-6 text-center">
             <Email className="w-8 h-8 text-primary-500 mx-auto mb-2" />
@@ -113,102 +108,36 @@ const AdminMessages = () => {
           </div>
         </div>
 
-        {/* Filter Buttons */}
         <div className="bg-white rounded-2xl shadow-lg p-4 mb-8">
           <div className="flex gap-3">
-            <button
-              onClick={() => setFilter('all')}
-              className={`px-4 py-2 rounded-lg transition-colors ${filter === 'all' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-            >
-              All ({stats.total})
-            </button>
-            <button
-              onClick={() => setFilter('unread')}
-              className={`px-4 py-2 rounded-lg transition-colors ${filter === 'unread' ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-            >
-              Unread ({stats.unread})
-            </button>
-            <button
-              onClick={() => setFilter('read')}
-              className={`px-4 py-2 rounded-lg transition-colors ${filter === 'read' ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-            >
-              Read ({stats.read})
-            </button>
+            <button onClick={() => setFilter('all')} className={`px-4 py-2 rounded-lg transition-colors ${filter === 'all' ? 'bg-primary-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>All ({stats.total})</button>
+            <button onClick={() => setFilter('unread')} className={`px-4 py-2 rounded-lg transition-colors ${filter === 'unread' ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>Unread ({stats.unread})</button>
+            <button onClick={() => setFilter('read')} className={`px-4 py-2 rounded-lg transition-colors ${filter === 'read' ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>Read ({stats.read})</button>
           </div>
         </div>
 
-        {/* Messages List */}
         <div className="space-y-4">
-          {filteredMessages.length === 0 ? (
-            <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-              <Email className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">No messages found</p>
-            </div>
-          ) : (
-            filteredMessages.map((message, index) => (
-              <motion.div
-                key={message.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                className={`bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow ${!message.is_read ? 'border-l-4 border-primary-500' : ''}`}
-              >
-                <div className="p-6">
-                  <div className="flex justify-between items-start flex-wrap gap-4">
-                    <div className="space-y-2 flex-1">
-                      {/* Sender Info */}
-                      <div className="flex items-center gap-4 flex-wrap">
-                        <div className="flex items-center gap-2">
-                          <Person className="w-5 h-5 text-gray-400" />
-                          <span className="font-semibold text-gray-800">{message.name}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Email className="w-5 h-5 text-gray-400" />
-                          <a href={`mailto:${message.email}`} className="text-primary-500 hover:underline">
-                            {message.email}
-                          </a>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Subject className="w-5 h-5 text-gray-400" />
-                          <span className="text-gray-600 font-medium">{message.subject}</span>
-                        </div>
-                      </div>
-                      
-                      {/* Message */}
-                      <p className="text-gray-700 mt-3 leading-relaxed">{message.message}</p>
-                      
-                      {/* Date */}
-                      <p className="text-sm text-gray-400 mt-2">
-                        Received: {new Date(message.created_at).toLocaleString('en-ZA')}
-                      </p>
+          {filteredMessages.map((message, index) => (
+            <motion.div key={message.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }} className={`bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow ${!message.is_read ? 'border-l-4 border-primary-500' : ''}`}>
+              <div className="p-6">
+                <div className="flex justify-between items-start flex-wrap gap-4">
+                  <div className="space-y-2 flex-1">
+                    <div className="flex items-center gap-4 flex-wrap">
+                      <div className="flex items-center gap-2"><Person className="w-5 h-5 text-gray-400" /><span className="font-semibold text-gray-800">{message.name}</span></div>
+                      <div className="flex items-center gap-2"><Email className="w-5 h-5 text-gray-400" /><a href={`mailto:${message.email}`} className="text-primary-500 hover:underline">{message.email}</a></div>
+                      <div className="flex items-center gap-2"><Subject className="w-5 h-5 text-gray-400" /><span className="text-gray-600 font-medium">{message.subject}</span></div>
                     </div>
-                    
-                    {/* Actions */}
-                    <div className="flex gap-2">
-                      {!message.is_read && (
-                        <button
-                          onClick={() => markAsRead(message.id)}
-                          className="px-3 py-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors flex items-center gap-1"
-                          title="Mark as read"
-                        >
-                          <CheckCircle className="w-5 h-5" />
-                          <span className="text-sm hidden md:inline">Mark Read</span>
-                        </button>
-                      )}
-                      <button
-                        onClick={() => deleteMessage(message.id)}
-                        className="px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-1"
-                        title="Delete"
-                      >
-                        <Delete className="w-5 h-5" />
-                        <span className="text-sm hidden md:inline">Delete</span>
-                      </button>
-                    </div>
+                    <p className="text-gray-700 mt-3 leading-relaxed">{message.message}</p>
+                    <p className="text-sm text-gray-400 mt-2">Received: {new Date(message.created_at).toLocaleString('en-ZA')}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    {!message.is_read && <button onClick={() => markAsRead(message.id)} className="px-3 py-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors flex items-center gap-1"><CheckCircle className="w-5 h-5" /><span className="text-sm hidden md:inline">Mark Read</span></button>}
+                    <button onClick={() => deleteMessage(message.id)} className="px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-1"><Delete className="w-5 h-5" /><span className="text-sm hidden md:inline">Delete</span></button>
                   </div>
                 </div>
-              </motion.div>
-            ))
-          )}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </div>

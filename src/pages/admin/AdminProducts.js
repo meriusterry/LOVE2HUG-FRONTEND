@@ -31,7 +31,6 @@ const AdminProducts = () => {
     setIsLoading(true);
     try {
       const response = await api.get('/products');
-      console.log('Loaded products:', response.data.products);
       setProducts(response.data.products);
     } catch (error) {
       console.error('Error loading products:', error);
@@ -77,16 +76,14 @@ const AdminProducts = () => {
     
     try {
       if (editingProduct) {
-        const response = await api.put(`/products/${editingProduct.id}`, formDataToSend, {
+        await api.put(`/products/${editingProduct.id}`, formDataToSend, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        console.log('Update response:', response.data);
         toast.success('Product updated successfully!');
       } else {
-        const response = await api.post('/products', formDataToSend, {
+        await api.post('/products', formDataToSend, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        console.log('Create response:', response.data);
         toast.success('Product added successfully!');
       }
       loadProducts();
@@ -111,7 +108,6 @@ const AdminProducts = () => {
   };
 
   const handleEdit = (product) => {
-    console.log('Editing product:', product);
     setEditingProduct(product);
     setFormData({
       name: product.name,
@@ -144,12 +140,8 @@ const AdminProducts = () => {
   };
 
   const getImageDisplay = (product) => {
-    if (product.imageUrl) {
-      return product.imageUrl;
-    }
-    if (product.product_image) {
-      return `data:${product.image_type || 'image/jpeg'};base64,${product.product_image}`;
-    }
+    if (product.imageUrl) return product.imageUrl;
+    if (product.product_image) return `data:${product.image_type || 'image/jpeg'};base64,${product.product_image}`;
     return 'https://via.placeholder.com/40x40?text=No+Image';
   };
 
@@ -163,7 +155,7 @@ const AdminProducts = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="text-6xl mb-4 animate-bounce">🧸</div>
+          <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">Loading products...</p>
         </div>
       </div>
@@ -183,7 +175,6 @@ const AdminProducts = () => {
           </button>
         </div>
 
-        {/* Filters */}
         <div className="bg-white rounded-2xl shadow-lg p-4 mb-8">
           <div className="flex gap-4">
             <div className="flex-1 relative">
@@ -209,7 +200,6 @@ const AdminProducts = () => {
           </div>
         </div>
 
-        {/* Products Table */}
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full">
@@ -232,10 +222,7 @@ const AdminProducts = () => {
                           src={getImageDisplay(product)} 
                           alt={product.name} 
                           className="w-10 h-10 rounded-lg object-cover"
-                          onError={(e) => { 
-                            console.log('Image error for:', product.name);
-                            e.target.src = 'https://via.placeholder.com/40x40?text=No+Image'; 
-                          }}
+                          onError={(e) => { e.target.src = 'https://via.placeholder.com/40x40?text=No+Image'; }}
                         />
                         <span className="font-medium text-gray-900">{product.name}</span>
                       </div>
@@ -272,7 +259,6 @@ const AdminProducts = () => {
         </div>
       </div>
 
-      {/* Product Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -369,7 +355,6 @@ const AdminProducts = () => {
                 />
               </div>
               
-              {/* Picture Upload */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Product Picture</label>
                 <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary-500 transition-colors">
