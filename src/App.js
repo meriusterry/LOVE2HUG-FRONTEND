@@ -48,17 +48,19 @@ function App() {
                 <Route path="/product/:id" element={<ProductDetailPage />} />
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
+                     // Add this route inside your Routes
+<Route path="/redirect" element={<RedirectPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/account" element={<AccountPage />} />
                 <Route path="/orders" element={<OrdersPage />} />
+           
                 
 <Route path="/payfast/return" element={<PayFastReturn />} />
 <Route path="/payfast/cancel" element={<Navigate to="/cart" />} />
 
-// Add this route inside your Routes
-<Route path="/redirect" element={<RedirectPage />} />
+
                 
                 {/* Admin Routes - Protected */}
                 <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
