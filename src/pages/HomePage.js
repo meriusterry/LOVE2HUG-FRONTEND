@@ -37,7 +37,7 @@ const HeroSection = () => {
 
 const FeatureSection = () => {
   const features = [
-    { icon: <LocalShipping className="text-5xl" />, title: 'Free Shipping', description: 'On orders over R500', color: 'bg-blue-100 text-blue-600' },
+    { icon: <LocalShipping className="text-5xl" />, title: 'Free Shipping', description: 'On orders over R1500', color: 'bg-blue-100 text-blue-600' },
     { icon: <Security className="text-5xl" />, title: 'Secure Payment', description: '100% secure transactions', color: 'bg-green-100 text-green-600' },
     { icon: <SupportAgent className="text-5xl" />, title: '24/7 Support', description: 'Always here to help', color: 'bg-purple-100 text-purple-600' },
   ];

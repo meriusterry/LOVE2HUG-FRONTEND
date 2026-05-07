@@ -19,7 +19,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-3">
               <a 
-                href="https://facebook.com/love2hug" 
+                href="https://www.facebook.com/share/1Xp2AQB5XC/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-gray-800 p-2 rounded-full hover:bg-primary-500 transition-colors duration-300"
@@ -28,7 +28,7 @@ const Footer = () => {
                 <Facebook className="w-5 h-5" />
               </a>
               <a 
-                href="https://instagram.com/love2hug" 
+                href="https://www.instagram.com/love2.cuddle?igsh=MXRtM3ZhazIxY2dvZA==" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="bg-gray-800 p-2 rounded-full hover:bg-primary-500 transition-colors duration-300"
@@ -85,24 +85,24 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start gap-2 text-gray-400">
                 <Room className="w-5 h-5 mt-0.5 flex-shrink-0" />
-                <span>123 Mandela Square, Sandton<br />Johannesburg, 2196<br />South Africa</span>
+                <span>11 Van Trump, Belgravia<br />Cape Town, 7535<br />South Africa</span>
               </li>
               <li className="flex items-center gap-2 text-gray-400">
                 <Phone className="w-5 h-5 flex-shrink-0" />
-                <a href="tel:+27111234567" className="hover:text-primary-400 transition-colors">
-                  +27 (0) 11 123 4567
+                <a href="tel:+27712371486" className="hover:text-primary-400 transition-colors">
+                  +27 (0) 71 237 1486
                 </a>
               </li>
               <li className="flex items-center gap-2 text-gray-400">
                 <WhatsApp className="w-5 h-5 flex-shrink-0" />
-                <a href="https://wa.me/27712345678" target="_blank" rel="noopener noreferrer" className="hover:text-primary-400 transition-colors">
-                  +27 71 234 5678 (WhatsApp)
+                <a href="https://wa.me/27712371486" target="_blank" rel="noopener noreferrer" className="hover:text-primary-400 transition-colors">
+                  +27 71 237 1486 (WhatsApp)
                 </a>
               </li>
               <li className="flex items-center gap-2 text-gray-400">
                 <Email className="w-5 h-5 flex-shrink-0" />
-                <a href="mailto:hello@Love2Cuddle.co.za" className="hover:text-primary-400 transition-colors">
-                  hello@love2cuddle.co.za
+                <a href="mailto:teddybears.love2cuddle@gmail.com" className="hover:text-primary-400 transition-colors">
+                  teddybears.love2cuddle@gmail.com
                 </a>
               </li>
             </ul>

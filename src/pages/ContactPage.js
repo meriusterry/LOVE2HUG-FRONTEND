@@ -42,11 +42,17 @@ const ContactPage = () => {
   };
 
   const contactInfo = [
-    { icon: <Phone className="w-6 h-6" />, title: 'Phone', details: '+27 (0) 11 123 4567', action: 'Call us now', link: 'tel:+27111234567' },
-    { icon: <WhatsApp className="w-6 h-6" />, title: 'WhatsApp', details: '+27 71 234 5678', action: 'Message us on WhatsApp', link: 'https://wa.me/27712345678' },
-    { icon: <Email className="w-6 h-6" />, title: 'Email', details: 'hello@love2hug.co.za', action: 'Send email', link: 'mailto:hello@love2hug.co.za' },
-    { icon: <Room className="w-6 h-6" />, title: 'Address', details: '123 Mandela Square, Sandton, Johannesburg, 2196', action: 'Get directions', link: 'https://maps.google.com/?q=Sandton+Johannesburg' },
-    { icon: <AccessTime className="w-6 h-6" />, title: 'Hours', details: 'Mon-Fri: 9am-6pm SAST, Sat: 10am-4pm SAST', action: '24/7 online support', link: null },
+    { icon: <Phone className="w-6 h-6" />, title: 'Phone', details: '+27 (0) 71 237 1486', action: 'Call us now', link: 'tel:+27712371486' },
+    { icon: <WhatsApp className="w-6 h-6" />, title: 'WhatsApp', details: '+27 71 237 1486', action: 'Message us on WhatsApp', link: 'https://wa.me/27712371486' },
+    { icon: <Email className="w-6 h-6" />, title: 'Email', details: 'teddybears.love2cuddle@gmail.com', action: 'Send email', link: 'mailto:teddybears.love2cuddle@gmail.com' },
+    { icon: <Room className="w-6 h-6" />, title: 'Address', details: '11 Van Tromp, Belgravia, Cape Town, 7535', action: 'Get directions', link: 'https://maps.google.com/?q=belgravia+capetown' },
+{ 
+  icon: <AccessTime className="w-6 h-6" />, 
+  title: 'Hours', 
+  details: 'Open 7 days a week, 24/7', 
+  action: 'Always available online', 
+  link: null 
+},
   ];
 
   // Johannesburg, South Africa coordinates
@@ -209,14 +215,14 @@ const ContactPage = () => {
               <h2 className="text-2xl font-bold text-gray-800 mb-4">Follow Us</h2>
               <div className="flex gap-4">
                 <button 
-                  onClick={() => window.open('https://instagram.com/love2hug', '_blank')}
+                  onClick={() => window.open('https://www.facebook.com/share/1Xp2AQB5XC/', '_blank')}
                   className="flex-1 bg-gradient-to-r from-pink-500 to-pink-600 text-white p-3 rounded-lg hover:scale-105 transition-transform flex items-center justify-center gap-2"
                 >
                   <Instagram className="w-5 h-5" />
                   Instagram
                 </button>
                 <button 
-                  onClick={() => window.open('https://facebook.com/love2hug', '_blank')}
+                  onClick={() => window.open('https://www.instagram.com/love2.cuddle?igsh=MXRtM3ZhazIxY2dvZA==', '_blank')}
                   className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white p-3 rounded-lg hover:scale-105 transition-transform flex items-center justify-center gap-2"
                 >
                   <Facebook className="w-5 h-5" />

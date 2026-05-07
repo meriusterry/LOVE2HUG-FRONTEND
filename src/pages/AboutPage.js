@@ -50,52 +50,53 @@ const AboutPage = () => {
       </div>
 
       {/* Story Section */}
-      <div className="container mx-auto px-4 py-20">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">The Love2Hug Journey</h2>
-            <div className="w-24 h-1 bg-primary-500 mx-auto mb-8"></div>
-          </motion.div>
-          
-          <div className="space-y-8 text-gray-600 text-lg leading-relaxed">
-            <motion.p
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              Love2Hug was born from a simple idea: everyone deserves a giant, huggable friend. 
-              What started as a small family business has grown into a beloved brand known for 
-              creating the softest, most huggable teddy bears on the market.
-            </motion.p>
-            
-            <motion.p
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              Our founder, Sarah Johnson, noticed that people of all ages found comfort in stuffed 
-              animals, but there was a lack of truly oversized, high-quality options. In 2026, she 
-              decided to change that by creating Love2Hug, specializing in giant teddy bears that 
-              are perfect for hugging, decorating, or gifting.
-            </motion.p>
-            
-            <motion.p
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              Today, Love2Hug has brought joy to thousands of customers worldwide. From birthday 
-              surprises to anniversary gifts, from hospital comfort to college dorm decorations, 
-              our bears have been there for life's special moments.
-            </motion.p>
-          </div>
-        </div>
-      </div>
+     <div className="container mx-auto px-4 py-20">
+  <div className="max-w-4xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+      className="text-center mb-12"
+    >
+      <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">The Love2Cuddle Journey</h2>
+      <div className="w-24 h-1 bg-primary-500 mx-auto mb-8"></div>
+    </motion.div>
+    
+    <div className="space-y-8 text-gray-600 text-lg leading-relaxed">
+      <motion.p
+        initial={{ opacity: 0, x: -50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        Love2Cuddle was created with one mission in mind — bringing warmth, comfort, 
+        and happiness to people through soft and lovable teddy bears. What began as a 
+        passionate idea has grown into a trusted brand known for delivering premium-quality 
+        giant teddy bears made for cuddling, gifting, and creating unforgettable memories.
+      </motion.p>
+      
+      <motion.p
+        initial={{ opacity: 0, x: 50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        At Love2Cuddle, we believe that teddy bears are more than just gifts — they are 
+        symbols of love, comfort, and connection. That’s why we focus on creating oversized, 
+        ultra-soft teddy bears that make every occasion feel extra special, whether it’s a 
+        birthday, anniversary, Valentine’s Day, or simply a surprise for someone you care about.
+      </motion.p>
+      
+      <motion.p
+        initial={{ opacity: 0, x: -50 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
+        Today, Love2Cuddle continues to spread smiles to customers across South Africa and beyond. 
+        From romantic gifts to cozy room décor and heartfelt surprises, our teddy bears have become 
+        part of countless special moments, helping people express love and affection in the softest way possible.
+      </motion.p>
+    </div>
+  </div>
+</div>
 
       {/* Values Section */}
       <div className="bg-gray-50 py-20">
@@ -109,7 +110,7 @@ const AboutPage = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Our Values</h2>
             <div className="w-24 h-1 bg-primary-500 mx-auto mb-8"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              What makes Love2Hug special isn't just our bears—it's how we make them and why we do it.
+              What makes Love2Cuddle special isn't just our bears—it's how we make them and why we do it.
             </p>
           </motion.div>
 
