@@ -189,7 +189,7 @@ const Navbar = () => {
                     <>
                       {/* Login/Signup options for non-logged in users */}
                       <div className="px-4 py-2 bg-gradient-to-r from-primary-50 to-pink-50">
-                        <p className="text-sm text-gray-600 mb-2">Welcome to Love2Hug!</p>
+                        <p className="text-sm text-gray-600 mb-2">Welcome to Love2Cuddle!</p>
                         <p className="text-xs text-gray-500">Sign in to access your account</p>
                       </div>
                       
@@ -345,7 +345,7 @@ const Navbar = () => {
                 }}
               />
               <span className="text-xl font-bold bg-gradient-to-r from-primary-500 to-primary-600 bg-clip-text text-transparent">
-                Love2Hug
+                Love2Cuddle
               </span>
             </div>
             
@@ -370,7 +370,7 @@ const Navbar = () => {
               <>
                 {/* Login/Signup options for mobile */}
                 <div className="bg-gradient-to-r from-primary-50 to-pink-50 p-3 rounded-lg mb-2">
-                  <p className="text-sm font-semibold text-gray-800">Welcome to Love2Hug!</p>
+                  <p className="text-sm font-semibold text-gray-800">Welcome to Love2Cuddle!</p>
                   <p className="text-xs text-gray-500">Sign in to access your account</p>
                 </div>
                 <Link 

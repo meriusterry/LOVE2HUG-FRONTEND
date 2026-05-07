@@ -74,7 +74,7 @@ const LoginPage = () => {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('user', JSON.stringify(response.data.user));
           
-          toast.success('Account created successfully! Welcome to Love2Hug! 🎉');
+          toast.success('Account created successfully! Welcome to Love2Cuddle! 🎉');
           
           // Redirect to checkout if that's where they were going
           if (from === '/checkout') {
@@ -106,7 +106,7 @@ const LoginPage = () => {
             {isLogin ? 'Welcome Back!' : 'Create Account'}
           </h2>
           <p className="text-gray-600 mt-2">
-            {isLogin ? 'Login to your Love2Hug account' : 'Join the Love2Hug family'}
+            {isLogin ? 'Login to your Love2Cuddle account' : 'Join the Love2Cuddle family'}
           </p>
           {from === '/checkout' && (
             <p className="text-sm text-primary-500 mt-2">⚠️ Please login to complete your purchase</p>
