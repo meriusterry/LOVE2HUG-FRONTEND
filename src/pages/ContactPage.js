@@ -55,11 +55,11 @@ const ContactPage = () => {
 },
   ];
 
-  // Johannesburg, South Africa coordinates
-  const johannesburgLat = -26.2041;
-  const johannesburgLng = 28.0473;
-  const mapEmbedUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14363.424891178627!2d${johannesburgLng}!3d${johannesburgLat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e9575a5f5e5e5e5%3A0x5e5e5e5e5e5e5e5e!2sSandton%2C%20Johannesburg!5e0!3m2!1sen!2sza!4v1700000000000!5m2!1sen!2sza`;
+ // Cape Town, Bellville coordinates
+const capeTownLat = -33.9007;
+const capeTownLng = 18.6287;
 
+const mapEmbedUrl = `https://www.google.com/maps?q=${capeTownLat},${capeTownLng}&hl=en&z=15&output=embed`;
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -232,24 +232,26 @@ const ContactPage = () => {
             </div>
 
             {/* Map */}
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Visit Our Showroom</h2>
-              <div className="h-80 bg-gray-200 rounded-lg overflow-hidden shadow-inner">
-                <iframe
-                  title="Love2Hug Showroom - Johannesburg"
-                  src={mapEmbedUrl}
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen=""
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
-              </div>
-              <p className="text-sm text-gray-500 mt-3 text-center">
-                📍 Located in Sandton, Johannesburg - South Africa's premier shopping destination
-              </p>
-            </div>
+           <div className="bg-white rounded-2xl shadow-lg p-8">
+  <h2 className="text-2xl font-bold text-gray-800 mb-4">Visit Our Showroom</h2>
+
+  <div className="h-80 bg-gray-200 rounded-lg overflow-hidden shadow-inner">
+    <iframe
+      title="Love2Cuddle Showroom - Cape Town"
+      src={mapEmbedUrl}
+      width="100%"
+      height="100%"
+      style={{ border: 0 }}
+      allowFullScreen=""
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+    ></iframe>
+  </div>
+
+  <p className="text-sm text-gray-500 mt-3 text-center leading-relaxed">
+    📍 11 Van Tromp Street, Belgravia, Bellville, 7535, Western Cape, Cape Town
+  </p>
+</div>
           </motion.div>
         </div>
       </div>
