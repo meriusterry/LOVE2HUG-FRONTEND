@@ -279,7 +279,7 @@ const LoginPage = () => {
               className="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-300"
               onClick={() => toast.info('Facebook login coming soon!')}
             >
-              <img src="https://www.facebook.com/favicon.ico" alt="Facebook" className="w-5 h-5" />
+              <img src="https://www.facebook.com/share/1Xp2AQB5XC/" alt="Facebook" className="w-5 h-5" />
               Facebook
             </button>
           </div>
