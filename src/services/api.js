@@ -44,9 +44,17 @@ api.interceptors.response.use(
 );
 
 // Auth APIs
-export const register = (userData) =>
-    api.post('/auth/register', userData);
+//export const register = (userData) =>
+  //  api.post('/auth/register', userData);
 
+
+export const register = (userData) => {
+    return api.post('/auth/register', JSON.stringify(userData), {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+};
 export const login = (credentials) =>
     api.post('/auth/login', credentials);
 
