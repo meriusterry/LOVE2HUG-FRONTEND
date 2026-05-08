@@ -1,9 +1,9 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://18.132.200.126:5001'//'http://localhost:5001/api';  
-//const API_URL = import.meta.env.VITE_API_URL;
+const API_URL =
+  process.env.REACT_APP_API_URL ||
+  'http://18.132.200.126:5001/api';
 
 const api = axios.create({
     baseURL: API_URL,
@@ -16,14 +16,14 @@ const api = axios.create({
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
+
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
+
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
 // Handle response errors
@@ -33,36 +33,66 @@ api.interceptors.response.use(
         if (error.response?.status === 401) {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+
             window.location.href = '/login';
+
             toast.error('Session expired. Please login again.');
         }
+
         return Promise.reject(error);
     }
 );
 
-
 // Auth APIs
-export const register = (userData) => api.post('/auth/register', userData);
-export const login = (credentials) => api.post('/auth/login', credentials);
-export const getMe = () => api.get('/auth/me');
+export const register = (userData) =>
+    api.post('/auth/register', userData);
+
+export const login = (credentials) =>
+    api.post('/auth/login', credentials);
+
+export const getMe = () =>
+    api.get('/auth/me');
 
 // Product APIs
-export const getProducts = (params) => api.get('/products', { params });
-export const getProduct = (id) => api.get(`/products/${id}`);
-export const createProduct = (productData) => api.post('/products', productData);
-export const updateProduct = (id, productData) => api.put(`/products/${id}`, productData);
-export const deleteProduct = (id) => api.delete(`/products/${id}`);
-export const getProductStats = () => api.get('/products/stats');
+export const getProducts = (params) =>
+    api.get('/products', { params });
+
+export const getProduct = (id) =>
+    api.get(`/products/${id}`);
+
+export const createProduct = (productData) =>
+    api.post('/products', productData);
+
+export const updateProduct = (id, productData) =>
+    api.put(`/products/${id}`, productData);
+
+export const deleteProduct = (id) =>
+    api.delete(`/products/${id}`);
+
+export const getProductStats = () =>
+    api.get('/products/stats');
 
 // Order APIs
-export const createOrder = (orderData) => api.post('/orders', orderData);
-export const getOrders = (params) => api.get('/orders', { params });
-export const getOrder = (id) => api.get(`/orders/${id}`);
-export const updateOrderStatus = (id, status) => api.put(`/orders/${id}/status`, { status });
-export const getOrderStats = () => api.get('/orders/stats');
+export const createOrder = (orderData) =>
+    api.post('/orders', orderData);
+
+export const getOrders = (params) =>
+    api.get('/orders', { params });
+
+export const getOrder = (id) =>
+    api.get(`/orders/${id}`);
+
+export const updateOrderStatus = (id, status) =>
+    api.put(`/orders/${id}/status`, { status });
+
+export const getOrderStats = () =>
+    api.get('/orders/stats');
 
 // User APIs
-export const updateProfile = (userData) => api.put('/users/profile', userData);
-export const getUserOrders = () => api.get('/users/orders');
+export const updateProfile = (userData) =>
+    api.put('/users/profile', userData);
+
+export const getUserOrders = () =>
+    api.get('/users/orders');
 
 export default api;
