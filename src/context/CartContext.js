@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import api from '../services/api';
+import { getCart, syncCart } from '../services/api';
 import toast from 'react-hot-toast';
 
 const CartContext = createContext();
@@ -32,6 +32,13 @@ export const CartProvider = ({ children }) => {
         setCartItems([]);
       }
     }
+    
+    // If user is logged in, load cart from backend
+    const token = localStorage.getItem('token');
+    if (token) {
+      loadCartFromBackend();
+    }
+    
     setIsLoading(false);
   }, []);
 
@@ -43,16 +50,76 @@ export const CartProvider = ({ children }) => {
       setCartCount(count);
       setCartTotal(total);
       localStorage.setItem('cart', JSON.stringify(cartItems));
+      
+      // If user is logged in, sync with backend (debounced)
+      const token = localStorage.getItem('token');
+      if (token && cartItems.length > 0) {
+        const timeoutId = setTimeout(() => {
+          syncCartWithBackend();
+        }, 1000);
+        return () => clearTimeout(timeoutId);
+      }
     }
   }, [cartItems, isLoading]);
 
-  const addToCart = (product, quantity = 1) => {
+  // Load cart from backend (for logged-in users)
+  const loadCartFromBackend = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+      const response = await getCart();
+      if (response.data.success && response.data.items && response.data.items.length > 0) {
+        // Merge backend cart with local cart
+        const mergedItems = [...cartItems];
+        
+        response.data.items.forEach(backendItem => {
+          const existingIndex = mergedItems.findIndex(item => item.id === backendItem.id);
+          if (existingIndex !== -1) {
+            // Use the higher quantity
+            mergedItems[existingIndex].quantity = Math.max(
+              mergedItems[existingIndex].quantity,
+              backendItem.quantity
+            );
+          } else {
+            mergedItems.push(backendItem);
+          }
+        });
+        
+        setCartItems(mergedItems);
+        console.log('Cart loaded from backend');
+      }
+    } catch (error) {
+      console.error('Error loading cart from backend:', error);
+    }
+  };
+
+  // Sync cart with backend (for logged-in users)
+  const syncCartWithBackend = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+      const cartData = cartItems.map(item => ({
+        product_id: item.id,
+        quantity: item.quantity,
+        size: item.size || '6ft'
+      }));
+      await syncCart(cartData);
+      console.log('Cart synced with backend');
+    } catch (error) {
+      console.error('Error syncing cart:', error);
+    }
+  };
+
+  const addToCart = (product, quantity = 1, size = '6ft') => {
     setCartItems(prev => {
       const existing = prev.find(item => item.id === product.id);
       if (existing) {
+        toast.success(`Updated ${product.name} quantity in cart! 🧸`);
         return prev.map(item =>
           item.id === product.id
-            ? { ...item, quantity: (item.quantity || 1) + quantity }
+            ? { ...item, quantity: (item.quantity || 1) + quantity, size: size }
             : item
         );
       }
@@ -60,22 +127,23 @@ export const CartProvider = ({ children }) => {
       const newItem = { 
         ...product, 
         quantity: quantity,
+        size: size,
         imageUrl: product.imageUrl || product.image_url || null,
         price: parseFloat(product.price)
       };
+      toast.success(`${product.name} added to cart! 🧸`);
       return [...prev, newItem];
     });
-   
   };
 
-  const removeFromCart = (productId) => {
+  const removeFromCart = (productId, productName) => {
     setCartItems(prev => prev.filter(item => item.id !== productId));
-    toast.success('Item removed from cart');
+    toast.success(`${productName || 'Item'} removed from cart`);
   };
 
-  const updateQuantity = (productId, quantity) => {
+  const updateQuantity = (productId, quantity, productName) => {
     if (quantity <= 0) {
-      removeFromCart(productId);
+      removeFromCart(productId, productName);
       return;
     }
     setCartItems(prev =>
@@ -88,40 +156,15 @@ export const CartProvider = ({ children }) => {
   const clearCart = () => {
     setCartItems([]);
     localStorage.removeItem('cart');
+    toast.success('Cart cleared');
   };
 
-  // Sync cart with backend (for logged-in users)
-  const syncCartWithBackend = async () => {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-
-    try {
-      const cartData = {
-        items: cartItems.map(item => ({
-          product_id: item.id,
-          quantity: item.quantity,
-          size: item.size || '6ft'
-        }))
-      };
-      await api.post('/cart/sync', cartData);
-    } catch (error) {
-      console.error('Error syncing cart:', error);
-    }
+  const getCartItemCount = () => {
+    return cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
   };
 
-  // Load cart from backend (for logged-in users)
-  const loadCartFromBackend = async () => {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-
-    try {
-      const response = await api.get('/cart');
-      if (response.data.success && response.data.items.length > 0) {
-        setCartItems(response.data.items);
-      }
-    } catch (error) {
-      console.error('Error loading cart from backend:', error);
-    }
+  const getCartSubtotal = () => {
+    return cartItems.reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 1)), 0);
   };
 
   const value = {
@@ -134,6 +177,8 @@ export const CartProvider = ({ children }) => {
     clearCart,
     syncCartWithBackend,
     loadCartFromBackend,
+    getCartItemCount,
+    getCartSubtotal,
     isLoading
   };
 

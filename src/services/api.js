@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 
 // ✅ Use your backend IP address
 const API_URL = process.env.REACT_APP_API_URL || 'http://18.132.200.126:5001/api';
+
 // Create axios instance
 const api = axios.create({
   baseURL: API_URL,
@@ -19,6 +20,7 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    console.log(`📤 API Request: ${config.method.toUpperCase()} ${config.baseURL}${config.url}`);
     return config;
   },
   (error) => Promise.reject(error)
@@ -26,8 +28,13 @@ api.interceptors.request.use(
 
 // Handle errors globally
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log(`📥 API Response: ${response.status} ${response.config.url}`);
+    return response;
+  },
   (error) => {
+    console.error('API Error:', error);
+    
     if (error.code === 'ERR_CANCELED') return Promise.reject(error);
     
     const message = error.response?.data?.message || 'Something went wrong. Please try again.';
@@ -35,7 +42,9 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
       toast.error('Session expired. Please login again.');
     } else if (error.response?.status === 500) {
       toast.error('Server error. Please try again later.');
@@ -77,10 +86,24 @@ export const getMe = () => api.get('/auth/me');
 // ======================
 export const getProducts = (params) => api.get('/products', { params });
 export const getProduct = (id) => api.get(`/products/${id}`);
-export const createProduct = (data) => api.post('/products', data);
-export const updateProduct = (id, data) => api.put(`/products/${id}`, data);
+export const createProduct = (data) => {
+  // Handle FormData for image upload
+  if (data instanceof FormData) {
+    return api.post('/products', data, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  }
+  return api.post('/products', data);
+};
+export const updateProduct = (id, data) => {
+  if (data instanceof FormData) {
+    return api.put(`/products/${id}`, data, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  }
+  return api.put(`/products/${id}`, data);
+};
 export const deleteProduct = (id) => api.delete(`/products/${id}`);
-export const getProductStats = () => api.get('/products/stats');
 
 // ======================
 // ORDERS
@@ -91,12 +114,17 @@ export const getOrder = (id) => api.get(`/orders/${id}`);
 export const updateOrderStatus = (id, status) => api.put(`/orders/${id}/status`, { status });
 export const getOrderStats = () => api.get('/orders/stats');
 export const getPaymentStatus = (orderNumber) => api.get(`/orders/payment-status/${orderNumber}`);
+export const getOrderByNumber = (orderNumber) => api.get(`/orders/by-number/${orderNumber}`);
 
 // ======================
-// USER
+// CART API
 // ======================
-export const updateProfile = (data) => api.put('/users/profile', data);
-export const getUserOrders = () => api.get('/users/orders');
+export const getCart = () => api.get('/cart');
+export const syncCart = (items) => api.post('/cart/sync', { items });
+export const addToCartBackend = (productId, quantity, size) => 
+  api.post('/cart/add', { product_id: productId, quantity, size });
+export const removeFromCartBackend = (productId) => 
+  api.delete(`/cart/remove/${productId}`);
 
 // ======================
 // PAYFAST
@@ -108,5 +136,12 @@ export const initiatePayFastPayment = (orderId) => api.post('/payfast/initiate',
 // ======================
 export const sendContactMessage = (data) => api.post('/contact', data);
 export const getContactMessages = () => api.get('/contact');
+export const markMessageAsRead = (id) => api.put(`/contact/${id}/read`);
+export const deleteContactMessage = (id) => api.delete(`/contact/${id}`);
+
+// ======================
+// ADMIN API
+// ======================
+export const getDashboardStats = () => api.get('/admin/stats');
 
 export default api;
